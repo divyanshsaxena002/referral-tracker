@@ -110,13 +110,6 @@ src/
 ]
 ```
 
----
-
-### 📌 4. Get Referral Report (CSV)
-
-`GET /api/referrals/report`
-
-**Response:** Downloads `referrals.csv` with all users and their referral stats.
 
 ---
 
