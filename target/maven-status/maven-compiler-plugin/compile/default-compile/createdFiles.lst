@@ -1,0 +1,14 @@
+com\referral\referraltracker\dto\SignupResponse.class
+com\referral\referraltracker\service\UserService.class
+com\referral\referraltracker\dto\ProfileCompleteResponse.class
+com\referral\referraltracker\controller\UserController.class
+com\referral\referraltracker\model\Referral.class
+com\referral\referraltracker\model\User$UserBuilder.class
+com\referral\referraltracker\ReferralTrackerApplication.class
+com\referral\referraltracker\dto\ProfileCompleteRequest.class
+com\referral\referraltracker\dto\SignupRequest.class
+com\referral\referraltracker\repository\ReferralRepository.class
+com\referral\referraltracker\model\User.class
+com\referral\referraltracker\model\Referral$ReferralBuilder.class
+com\referral\referraltracker\dto\ReferralInfoDTO.class
+com\referral\referraltracker\repository\UserRepository.class
