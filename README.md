@@ -188,7 +188,7 @@ src/
    ```properties
    spring.datasource.url=jdbc:mysql://localhost:3306/referral_db
    spring.datasource.username=root
-   spring.datasource.password=your_password
+   spring.datasource.password=my_password
    spring.jpa.hibernate.ddl-auto=update
    ```
 
@@ -209,12 +209,12 @@ src/
 
 ---
 
-## 📄 Sample `curl` Requests
+## 📄 Sample `postmann` Requests
 
 ### Signup:
 
 ```bash
-curl -X POST http://localhost:9000/api/signup \
+ POST http://localhost:9000/api/signup \
   -H "Content-Type: application/json" \
   -d '{"name":"Alice","email":"alice@gmail.com","password":"123456","referralCode":"XYZ123"}'
 ```
@@ -230,14 +230,8 @@ curl -X POST http://localhost:9000/api/complete-profile \
 ### Get Referrals:
 
 ```bash
-curl http://localhost:9000/api/referrals/user-uuid
-```
+ http://localhost:9000/api/referrals/user-uuid
 
-### CSV Report:
-
-```bash
-curl -O http://localhost:9000/api/referrals/report
-```
 
 ---
 
