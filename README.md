@@ -31,7 +31,7 @@ This README includes real API usage examples and database screenshots.
 
 Here’s how the `users` table looks in MySQL:
 
-![Users Table](screenshots/users-table.png)
+![Users Table](https://github.com/divyanshsaxena002/referral-tracker/blob/main/img/img4.png)
 
 - `referral_code`: Unique code for each user.
 - `referred_by`: Referral code of the user who referred them (if any).
@@ -61,7 +61,7 @@ GET http://localhost:8080/api/referrals/61d48adb-2c73-4ee8-b1a0-fc1270b3cae2
   }
 ]
 ```
-![Get Referrals Pending](screenshots/get-referrals-pending.png)
+![Get Referrals Pending](https://github.com/divyanshsaxena002/referral-tracker/blob/main/img/img1.png)
 
 ---
 
@@ -86,7 +86,7 @@ Content-Type: application/json
   "message": "Profile marked as complete"
 }
 ```
-![Complete Profile](screenshots/complete-profile.png)
+![Complete Profile](https://github.com/divyanshsaxena002/referral-tracker/blob/main/img/img2.png)
 
 ---
 
@@ -104,7 +104,7 @@ After the referred user completes their profile, the referral status changes to 
   }
 ]
 ```
-![Get Referrals Completed](screenshots/get-referrals-completed.png)
+![Get Referrals Completed](https://github.com/divyanshsaxena002/referral-tracker/blob/main/img/img3.png)
 
 ---
 
@@ -151,8 +151,4 @@ After the referred user completes their profile, the referral status changes to 
 
 ---
 
-## 🖼️ Screenshots
-
-- Place your screenshots in a `screenshots/` folder in your repo.
-- Update the image links in this README if you use different filenames or locations.
-
+By: Divyansh Saxena
