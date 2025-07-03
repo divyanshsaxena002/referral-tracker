@@ -1,257 +1,158 @@
-# 🎯 Referral Tracking System - Java Backend LLM Assessment
+# 🎯 Referral Tracking System
 
-This project implements a backend system for **user signup and referral tracking**, where a referral is considered **successful only after the referred user completes their profile**.
+A Java Spring Boot backend for user signup and referral tracking, with profile completion logic and API endpoints.  
+This README includes real API usage examples and database screenshots.
 
 ---
 
 ## 🚀 Features
 
-- 📝 User Signup with/without referral code
-- 🎁 Unique referral code generation
-- 🔗 Referral tracking and status updates
-- 👤 Profile completion handling
-- 📊 Fetch referrals for a given user
-- 📄 Generate CSV report of all referrals (Bonus)
-- 🧪 Unit test coverage with JUnit
+- User signup with/without referral code
+- Unique referral code generation
+- Referral tracking and status updates
+- Profile completion handling
+- Fetch referrals for a given user
+- MySQL database integration
 
 ---
 
 ## 🧱 Tech Stack
 
-| Layer        | Stack                |
-|--------------|----------------------|
-| Language     | Java 24              |
-| Framework    | Spring Boot 3.x      |
-| Database     | MySQL 8+             |
-| ORM          | Spring Data JPA      |
-| Build Tool   | Maven                |
-| Testing      | JUnit                |
-| Deployment   | Render (or Railway/EC2/etc) |
+- **Language:** Java 17+
+- **Framework:** Spring Boot 3.x
+- **Database:** MySQL 8+
+- **ORM:** Spring Data JPA
+- **Build Tool:** Maven
+- **Testing:** Postman
 
 ---
 
-## 📁 Project Structure
+## 📦 Database Example
 
-```
-src/
-├── controller/        // REST API Controllers
-├── service/           // Business Logic
-├── repository/        // JPA Repositories
-├── model/             // Entity Classes
-├── dto/               // Request & Response DTOs
-├── config/            // Config files (DB, CORS)
-└── util/              // Utility Classes
-```
+Here’s how the `users` table looks in MySQL:
+
+![Users Table](screenshots/users-table.png)
+
+- `referral_code`: Unique code for each user.
+- `referred_by`: Referral code of the user who referred them (if any).
+- `is_profile_complete`: 1 if the user has completed their profile, 0 otherwise.
 
 ---
 
-## 🛠️ API Endpoints
+## 🛠️ API Endpoints & Usage
 
-### 📌 1. Signup User
-`POST /api/signup`
+### 1. Get Referrals by User
 
-**Request Body:**
+**Endpoint:**  
+`GET /api/referrals/{userId}`
+
+**Example Request:**  
+```
+GET http://localhost:8080/api/referrals/61d48adb-2c73-4ee8-b1a0-fc1270b3cae2
+```
+
+**Example Response (Pending):**
 ```json
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "securepass",
-  "referralCode": "ABCD1234" // optional
-}
+[
+  {
+    "referredUser": "Vipul",
+    "email": "vipul@example.com",
+    "status": "pending"
+  }
+]
 ```
-
-**Response:**
-
-```json
-{
-  "message": "Signup successful",
-  "referralCode": "XYZ9876"
-}
-```
+![Get Referrals Pending](screenshots/get-referrals-pending.png)
 
 ---
 
-### 📌 2. Complete Profile
+### 2. Complete Profile
 
+**Endpoint:**  
 `POST /api/complete-profile`
 
-**Request Body:**
-
+**Example Request:**
 ```json
+POST http://localhost:8080/api/complete-profile
+Content-Type: application/json
+
 {
-  "userId": "UUID-of-user"
+  "userId": "ba796fe8-0666-43fa-a94b-2bfe8d1990bb"
 }
 ```
 
-**Response:**
-
+**Example Response:**
 ```json
 {
   "message": "Profile marked as complete"
 }
 ```
+![Complete Profile](screenshots/complete-profile.png)
 
 ---
 
-### 📌 3. Get Referrals by User
+### 3. Referral Status Update
 
-`GET /api/referrals/{userId}`
+After the referred user completes their profile, the referral status changes to `"completed"`.
 
-**Response:**
-
+**Example Response (Completed):**
 ```json
 [
   {
-    "referredUser": "Jane Doe",
-    "email": "jane@example.com",
+    "referredUser": "Vipul",
+    "email": "vipul@example.com",
     "status": "completed"
-  },
-  ...
+  }
 ]
 ```
-
-
----
-
-## 💡 Referral Logic
-
-* Every user gets a **unique referral code** on signup.
-* If a user signs up with a valid code, they are linked to the **referrer**.
-* Referral status is marked:
-
-  * `"pending"` at signup
-  * `"completed"` after referred user completes profile
+![Get Referrals Completed](screenshots/get-referrals-completed.png)
 
 ---
 
-## 🧪 Unit Testing
+## 💡 How the System Works
 
-* Covered all business logic and API endpoints using **JUnit**.
-* Edge cases tested:
+1. **User Signup:**  
+   Users can sign up with or without a referral code. If a referral code is used, a referral relationship is created.
 
-  * Invalid referral codes
-  * Double profile completion
-  * Circular referrals (prevented)
+2. **Referral Tracking:**  
+   The referrer can view their referrals and see their status (`pending` or `completed`).
 
----
+3. **Profile Completion:**  
+   When a referred user completes their profile, the referral status is updated to `completed`.
 
-## 💽 Database Schema
-
-### `users` Table
-
-| Field                 | Type    | Description               |
-| --------------------- | ------- | ------------------------- |
-| id                    | UUID    | Primary Key               |
-| name                  | VARCHAR | User name                 |
-| email                 | VARCHAR | Unique email              |
-| password              | VARCHAR | Encrypted password        |
-| referral_code         | VARCHAR | Unique per user           |
-| referred_by           | VARCHAR | Referral code of referrer |
-| is_profile_complete   | BOOLEAN | Marks profile completion  |
-
-### `referrals` Table
-
-| Field        | Type    | Description                     |
-| ------------ | ------- | ------------------------------- |
-| id           | UUID    | Primary Key                     |
-| referrer_id  | UUID    | FK to Users                     |
-| referred_id  | UUID    | FK to Users                     |
-| status       | VARCHAR | Either `pending` or `completed` |
+4. **Database:**  
+   All user and referral data is stored in MySQL, as shown in the screenshots.
 
 ---
 
-## ⚙️ How to Run Locally
+## ⚙️ Setup & Run
 
-### ✅ Prerequisites
-
-* Java 24 installed
-* Maven installed
-* MySQL running locally
-
-### 📦 Steps
-
-1. Clone the repo:
-
-   ```bash
-   git clone https://github.com/yourusername/referral-tracker
+1. **Clone the repo:**
+   ```sh
+   git clone https://github.com/divyanshsaxena002/referral-tracker.git
    cd referral-tracker
    ```
 
-2. Create MySQL DB:
-
-   ```sql
-   CREATE DATABASE referral_db;
-   ```
-
-3. Configure `src/main/resources/application.properties`:
-
+2. **Configure your database in `src/main/resources/application.properties`:**
    ```properties
    spring.datasource.url=jdbc:mysql://localhost:3306/referral_db
-   spring.datasource.username=root
-   spring.datasource.password=my_password
+   spring.datasource.username=YOUR_DB_USER
+   spring.datasource.password=YOUR_DB_PASSWORD
    spring.jpa.hibernate.ddl-auto=update
+   spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
    ```
 
-4. Build & run:
-
-   ```bash
-   mvn spring-boot:run
+3. **Build and run:**
+   ```sh
+   mvn clean install
+   java -jar target/*.jar
    ```
 
-5. Server runs at: `http://localhost:8080`
+4. **Test the APIs using Postman or curl.**
 
 ---
 
-## ☁️ Deployment
+## 🖼️ Screenshots
 
-* Deployed on: [https://referral-tracker.onrender.com](https://referral-tracker.onrender.com) *(replace with your actual URL)*
-* Public GitHub Repo: [github.com/yourusername/referral-tracker](https://github.com/yourusername/referral-tracker)
+- Place your screenshots in a `screenshots/` folder in your repo.
+- Update the image links in this README if you use different filenames or locations.
 
----
-
-## 📄 Sample `postmann` Requests
-
-### Signup:
-
-```bash
- POST http://localhost:9000/api/signup \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Alice","email":"alice@gmail.com","password":"123456","referralCode":"XYZ123"}'
-```
-
-### Complete Profile:
-
-```bash
-curl -X POST http://localhost:9000/api/complete-profile \
-  -H "Content-Type: application/json" \
-  -d '{"userId":"user-uuid"}'
-```
-
-### Get Referrals:
-
-```bash
- http://localhost:9000/api/referrals/user-uuid
-
-
----
-
-## 🏁 Future Improvements
-
-* Add password encryption (BCrypt)
-* Add pagination & filtering to referral list
-* Add Swagger/OpenAPI docs
-* Add email notifications on successful referrals
-
----
-
-## 👨‍💻 Author
-
-**Divyansh Saxena**
-Backend Developer | Java Enthusiast | LLM Intern Candidate
-📫 [divyansh@example.com](mailto:divyansh@example.com) *(replace with your contact)*
-
----
-
-## 📝 License
-
-This project is open source and free to use under the [MIT License](LICENSE). 
